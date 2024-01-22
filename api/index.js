@@ -1,8 +1,10 @@
-const express = require("express");
-const mongoose = require("mongoose");
+import express from "express";
+import mongoose from "mongoose";
+import userRouter from "./routes/user.route.js";
+import authRouter from "./routes/auth.route.js";
+
 const app = express();
-// const dotenv = require("dotenv");
-// dotenv.config();
+
 
 const DB =
   "mongodb+srv://ahmadnishar1132:Nishar1132@cluster0.kj6kfgn.mongodb.net/?retryWrites=true&w=majority";
@@ -16,9 +18,25 @@ mongoose
     console.log("Mongo Connected..");
   })
   .catch((e) => {
-    console.log("Error occurred ");
+    console.log("Error occurred ", e);
   });
 
+
+app.use(express.json());
 app.listen(3000, () => {
-  console.log("Server running..");
+  console.log("Server running...");
+});
+
+app.use("/api/user", userRouter);
+app.use("/api/auth", authRouter);
+
+
+app.use( (err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || 'Internal Error';
+  res.status(statusCode).json({
+    success: false,
+    statusCode,
+    message
+  })
 });
