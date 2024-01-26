@@ -10,7 +10,7 @@ export default function SignUp() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const changeHandle = (e) => {
+  const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
 
@@ -60,7 +60,7 @@ export default function SignUp() {
                 type="text"
                 placeholder="username"
                 id="username"
-                onChange={changeHandle}
+                onChange={handleChange}
               />
             </div>
             <div>
@@ -69,7 +69,7 @@ export default function SignUp() {
                 type="email"
                 placeholder="name@company.com"
                 id="email"
-                onChange={changeHandle}
+                onChange={handleChange}
               />
             </div>
             <div>
@@ -78,7 +78,7 @@ export default function SignUp() {
                 type="password"
                 placeholder="password"
                 id="password"
-                onChange={changeHandle}
+                onChange={handleChange}
               />
             </div>
             <Button
