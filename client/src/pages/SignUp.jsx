@@ -31,12 +31,15 @@ export default function SignUp() {
       if (data.success === false) {
         return setErrorMessage(data.message);
       }
-      setLoading(false);
-      if (res.ok) {
+      // setLoading(false);
+      else {
         navigate("/sign-in");
       }
     } catch (error) {
       setErrorMessage(error.message);
+      setLoading(false);
+    }
+    finally{
       setLoading(false);
     }
   };
