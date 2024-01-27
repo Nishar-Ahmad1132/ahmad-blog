@@ -102,9 +102,9 @@ export default function SignUp() {
             <OAuth/>
           </form>
           <div className="is-log-in">
-            <span>Have an account?</span>
+            <span>Already have an account?</span>
             <Link to="/sign-in" className="text-blue-400">
-              Sign In
+              Sign-In
             </Link>
           </div>
           {errorMessage && (
