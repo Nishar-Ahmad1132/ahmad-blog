@@ -44,7 +44,7 @@ export default function SignIn() {
 
   };
   return (
-    <div className="mt-20">
+    <div className="mt-20 min-h-screen">
       <div className="sign-up-sec ">
         <div className="left">
           <Link to="/" className="sign-up-logo dark:text-white">
@@ -52,7 +52,10 @@ export default function SignIn() {
             Blog
           </Link>
           <p className="su-left-para">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Share your story with the world. Stand out with a
+            professionally-designed blog website that can be customized to fit
+            your brand. Build, manage, and promote your blog with Squarespace’s
+            built-in suite of design and marketing tools.
           </p>
         </div>
         <div className="right">
@@ -89,7 +92,7 @@ export default function SignIn() {
                 "Sign In"
               )}
             </Button>
-            <OAuth/>
+            <OAuth />
           </form>
           <div className="is-log-in">
             <span>Don`t have an account?</span>
