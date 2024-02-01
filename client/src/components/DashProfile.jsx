@@ -1,28 +1,27 @@
 /* eslint-disable no-unused-vars */
-import { Alert, Button, Modal, ModalBody, TextInput } from "flowbite-react";
-import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
 import {
   getDownloadURL,
   getStorage,
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-import { app } from "../firebase";
+import { Alert, Button, Modal, TextInput } from "flowbite-react";
+import { useEffect, useRef, useState } from "react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { app } from "../firebase";
 import {
-  updateStart,
-  updateSuccess,
-  updateFailure,
+  deleteUserFailure,
   deleteUserStart,
   deleteUserSuccess,
-  deleteUserFailure,
   signoutSuccess,
+  updateFailure,
+  updateStart,
+  updateSuccess,
 } from "../redux/user/userSlice";
-import { useDispatch } from "react-redux";
-import { HiOutlineExclamationCircle } from "react-icons/hi";
-import { Link } from "react-router-dom";
 
 export default function DashProfile() {
   const { currentUser, error, loading } = useSelector((state) => state.user);
@@ -37,7 +36,7 @@ export default function DashProfile() {
   const [formData, setFormData] = useState({});
   const filePickerRef = useRef();
   const dispatch = useDispatch();
-  
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -133,6 +132,7 @@ export default function DashProfile() {
       setUpdateUserError(error.message);
     }
   };
+
   const handleDeleteUser = async () => {
     setShowModal(false);
     try {
