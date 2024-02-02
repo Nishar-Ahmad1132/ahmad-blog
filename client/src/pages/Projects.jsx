@@ -2,7 +2,5 @@
 import React from 'react'
 
 export default function Projects() {
-  return (
-    <div>Projects</div>
-  )
+  return <div className="min-h-screen text-center">Projects</div>;
 }

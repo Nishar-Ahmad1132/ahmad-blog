@@ -30,6 +30,7 @@ export default function Header() {
       console.log(error.message);
     }
   };
+  
   return (
     <Navbar className="border-b-2">
       <Link to="/" className="logo">
@@ -60,7 +61,7 @@ export default function Header() {
           <Dropdown
             arrowIcon={false}
             inline
-            label={<Avatar img={currentUser.profilePicture} />}
+            label={<Avatar rounded  img={currentUser.profilePicture} />}
           >
             <Dropdown.Header>
               <span className="block text-sm">@{currentUser.username}</span>
