@@ -17,7 +17,7 @@ export default function SignUp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.username || !formData.email || !formData.password) {
+    if (!formData.name || !formData.username || !formData.email || !formData.password) {
       return setErrorMessage("Please fill out all fields.");
     }
     try {
@@ -61,6 +61,15 @@ export default function SignUp() {
         </div>
         <div className="right">
           <form className="sign-up-form" onSubmit={handleSubmit}>
+            <div>
+              <Label value="Your name" />
+              <TextInput
+                type="text"
+                placeholder="Nishar Ahmad"
+                id="name"
+                onChange={handleChange}
+              />
+            </div>
             <div>
               <Label value="Your usename" />
               <TextInput

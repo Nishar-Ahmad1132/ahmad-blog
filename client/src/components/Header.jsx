@@ -63,8 +63,9 @@ export default function Header() {
             inline
             label={<Avatar rounded  img={currentUser.profilePicture} />}
           >
-            <Dropdown.Header>
-              <span className="block text-sm">@{currentUser.username}</span>
+            <Dropdown.Header className="flex flex-col gap-2">
+              <span className="block text-sm">Name: {currentUser.name}</span>
+              <span className="block text-sm">Username: {currentUser.username}</span>
               <span className="block text-sm font-medium truncate">
                 @{currentUser.email}
               </span>
