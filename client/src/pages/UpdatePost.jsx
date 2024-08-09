@@ -131,10 +131,7 @@ console.log(image)
   return (
     <div className="p-3 max-w-3xl mx-auto min-h-screen">
       <h1 className="text-center text-3xl my-7 font-semibold">Update post</h1>
-      <form
-        className="flex flex-col gap-4"
-        onSubmit={handleSubmit}
-      >
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4 sm:flex-row justify-between">
           <TextInput
             type="text"
@@ -158,6 +155,7 @@ console.log(image)
             <option value="reactjs">React.js</option>
             <option value="nextjs">Next.js</option>
             <option value="MERN Stack">MERN Stack</option>
+            <option value="App Development">App Development</option>
           </Select>
         </div>
         <div className="flex gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3">
@@ -188,11 +186,7 @@ console.log(image)
         </div>
         {imageUploadError && <Alert color="failure">{imageUploadError}</Alert>}
         {image && (
-          <img
-            src={image}
-            alt="upload"
-            className="w-full h-72 object-cover"
-          />
+          <img src={image} alt="upload" className="w-full h-72 object-cover" />
         )}
         <ReactQuill
           theme="snow"
