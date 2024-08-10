@@ -13,11 +13,11 @@ dotenv.config();
 const app = express();
 
 
-// const DB = 
-//   "mongodb+srv://ahmadnishar1132:Nishar1132@cluster0.kj6kfgn.mongodb.net/?retryWrites=true&w=majority";
+const DB = 
+  "mongodb+srv://ahmadnishar1132:Nishar1132@cluster0.kj6kfgn.mongodb.net/?retryWrites=true&w=majority";
 
 mongoose
-  .connect(process.env.MONGO, {
+  .connect(DB, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
