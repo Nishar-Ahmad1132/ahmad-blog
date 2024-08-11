@@ -39,7 +39,7 @@ app.use(cookieParser());
 // Use environment variable for port or default to 4000
 // const PORT = process.env.PORT || 4000;
 
-app.listen(3001, () => {
+app.listen(3000, () => {
   console.log(`Server running on port ...`);
 });
 
@@ -48,11 +48,11 @@ app.use("/api/auth", authRouter);
 app.use("/api/post", postRoutes);
 app.use("/api/comment", commentRoutes);
 
-app.use(express.static(path.join(__dirname, '/client/dist')));
+// app.use(express.static(path.join(__dirname, '/client/dist')));
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
+// });
 
 
 app.use( (err, req, res, next) => {
