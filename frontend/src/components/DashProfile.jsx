@@ -97,6 +97,13 @@ export default function DashProfile() {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
+  // const handleChange = (e) => {
+  //   const { id, value } = e.target;
+  //   setFormData((prevState) => ({
+  //     ...prevState,
+  //     [id]: value,
+  //   }));
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -168,7 +175,11 @@ export default function DashProfile() {
   };
   return (
     <div className="max-w-lg mx-auto p-3 w-full">
-      <h1 className="my-7 text-center font-semibold text-3xl">Profile</h1>
+      <h1 className="my-7 text-center font-semibold text-3xl">
+        <p className="mt-4 text-center text-gray-600">
+          Welcome, {currentUser.name}!
+        </p>
+      </h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input
           type="file"
@@ -215,6 +226,7 @@ export default function DashProfile() {
         {imageFileUploadError && (
           <Alert color="failure">{imageFileUploadError}</Alert>
         )}
+        <br />
         <TextInput
           type="text"
           id="name"

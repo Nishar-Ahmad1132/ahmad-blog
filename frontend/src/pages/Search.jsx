@@ -7,31 +7,27 @@ export default function Search() {
   const [sidebarData, setSidebarData] = useState({
     searchTerm: "",
     sort: "desc",
-    category: "uncategorized",
+    category: "all", // Default to 'all' to fetch all posts initially
   });
 
-  // console.log(sidebarData);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showMore, setShowMore] = useState(false);
 
   const location = useLocation();
-
   const navigate = useNavigate();
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
-    const searchTermFromUrl = urlParams.get("searchTerm");
-    const sortFromUrl = urlParams.get("sort");
-    const categoryFromUrl = urlParams.get("category");
-    if (searchTermFromUrl || sortFromUrl || categoryFromUrl) {
-      setSidebarData({
-        ...sidebarData,
-        searchTerm: searchTermFromUrl,
-        sort: sortFromUrl,
-        category: categoryFromUrl,
-      });
-    }
+    const searchTermFromUrl = urlParams.get("searchTerm") || "";
+    const sortFromUrl = urlParams.get("sort") || "desc";
+    const categoryFromUrl = urlParams.get("category") || "all"; // Set default to 'all'
+
+    setSidebarData({
+      searchTerm: searchTermFromUrl,
+      sort: sortFromUrl,
+      category: categoryFromUrl,
+    });
 
     const fetchPosts = async () => {
       setLoading(true);
@@ -41,47 +37,36 @@ export default function Search() {
         setLoading(false);
         return;
       }
-      if (res.ok) {
-        const data = await res.json();
-        setPosts(data.posts);
-        setLoading(false);
-        if (data.posts.length === 9) {
-          setShowMore(true);
-        } else {
-          setShowMore(false);
-        }
-      }
+      const data = await res.json();
+      setPosts(data.posts);
+      setLoading(false);
+      setShowMore(data.posts.length === 9);
     };
     fetchPosts();
   }, [location.search]);
 
   const handleChange = (e) => {
-    if (e.target.id === "searchTerm") {
-      setSidebarData({ ...sidebarData, searchTerm: e.target.value });
-    }
-    if (e.target.id === "sort") {
-      const order = e.target.value || "desc";
-      setSidebarData({ ...sidebarData, sort: order });
-    }
-    if (e.target.id === "category") {
-      const category = e.target.value || "uncategorized";
-      setSidebarData({ ...sidebarData, category });
-    }
+    const { id, value } = e.target;
+    setSidebarData((prevState) => ({
+      ...prevState,
+      [id]: value,
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const urlParams = new URLSearchParams(location.search);
-    urlParams.set("searchTerm", sidebarData.searchTerm);
-    urlParams.set("sort", sidebarData.sort);
-    urlParams.set("category", sidebarData.category);
-    const searchQuery = urlParams.toString();
-    navigate(`/search?${searchQuery}`);
+    const urlParams = new URLSearchParams(sidebarData);
+
+    // If category is "all", remove it from the query string
+    if (sidebarData.category === "all") {
+      urlParams.delete("category");
+    }
+
+    navigate(`/search?${urlParams.toString()}`);
   };
 
   const handleShowMore = async () => {
-    const numberOfPosts = posts.length;
-    const startIndex = numberOfPosts;
+    const startIndex = posts.length;
     const urlParams = new URLSearchParams(location.search);
     urlParams.set("startIndex", startIndex);
     const searchQuery = urlParams.toString();
@@ -89,23 +74,24 @@ export default function Search() {
     if (!res.ok) {
       return;
     }
-    if (res.ok) {
-      const data = await res.json();
-      setPosts([...posts, ...data.posts]);
-      if (data.posts.length === 9) {
-        setShowMore(true);
-      } else {
-        setShowMore(false);
-      }
-    }
+    const data = await res.json();
+    setPosts([...posts, ...data.posts]);
+    setShowMore(data.posts.length === 9);
   };
 
   return (
-    <div className="flex flex-col md:flex-row">
-      <div className="p-7 border-b md:border-r md:min-h-screen border-gray-500">
-        <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
-          <div className="flex   items-center gap-2">
-            <label className="whitespace-nowrap font-semibold">
+    <div className="flex flex-col">
+      {/* Filter Section */}
+      <div className="bg-white dark:bg-gray-800 p-6 shadow-md rounded-md w-full">
+        <form
+          className="flex flex-wrap gap-5 justify-around items-end w-full"
+          onSubmit={handleSubmit}
+        >
+          <div className="flex flex-col w-full sm:w-auto">
+            <label
+              htmlFor="searchTerm"
+              className="font-semibold text-gray-700 dark:text-gray-300"
+            >
               Search Term:
             </label>
             <TextInput
@@ -116,20 +102,39 @@ export default function Search() {
               onChange={handleChange}
             />
           </div>
-          <div className="flex items-center gap-2">
-            <label className="font-semibold">Sort:</label>
-            <Select onChange={handleChange} value={sidebarData.sort} id="sort">
+
+          <div className="flex flex-col w-full sm:w-auto">
+            <label
+              htmlFor="sort"
+              className="font-semibold text-gray-700 dark:text-gray-300"
+            >
+              Sort:
+            </label>
+            <Select
+              id="sort"
+              onChange={handleChange}
+              value={sidebarData.sort}
+              className="w-full"
+            >
               <option value="desc">Latest</option>
               <option value="asc">Oldest</option>
             </Select>
           </div>
-          <div className="flex items-center gap-2">
-            <label className="font-semibold">Category:</label>
+
+          <div className="flex flex-col w-full sm:w-auto">
+            <label
+              htmlFor="category"
+              className="font-semibold text-gray-700 dark:text-gray-300"
+            >
+              Category:
+            </label>
             <Select
+              id="category"
               onChange={handleChange}
               value={sidebarData.category}
-              id="category"
+              className="w-full"
             >
+              <option value="all">All</option>
               <option value="uncategorized">Uncategorized</option>
               <option value="javascript">JavaScript</option>
               <option value="reactjs">React.js</option>
@@ -138,14 +143,22 @@ export default function Search() {
               <option value="App Development">App Development</option>
             </Select>
           </div>
-          <Button type="submit" outline gradientDuoTone="purpleToPink">
+
+          <Button
+            type="submit"
+            outline
+            gradientDuoTone="purpleToPink"
+            className="w-full sm:w-auto"
+          >
             Apply Filters
           </Button>
         </form>
       </div>
-      <div className="w-full">
-        <h1 className="text-3xl font-semibold sm:border-b border-gray-500 p-3 mt-5 ">
-          Posts results:
+
+      {/* Posts Section */}
+      <div className="w-full mt-6">
+        <h1 className="text-3xl font-semibold sm:border-b border-gray-500 p-3 mb-6">
+          Posts Results:
         </h1>
         <div className="p-7 flex flex-wrap gap-4">
           {!loading && posts.length === 0 && (

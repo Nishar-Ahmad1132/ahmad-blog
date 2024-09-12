@@ -5,17 +5,20 @@ import User from "../models/user.model.js";
 export const test = (req, res) => {
   res.json({ message: "API is working!" });
 };
-
 export const updateUser = async (req, res, next) => {
   if (req.user.id !== req.params.userId) {
     return next(errorHandler(403, "You are not allowed to update this user"));
   }
+
+  // Validate password length if password is being updated
   if (req.body.password) {
     if (req.body.password.length < 6) {
       return next(errorHandler(400, "Password must be at least 6 characters"));
     }
     req.body.password = bcryptjs.hashSync(req.body.password, 10);
   }
+
+  // Validate username constraints if username is being updated
   if (req.body.username) {
     if (req.body.username.length < 7 || req.body.username.length > 20) {
       return next(
@@ -34,25 +37,29 @@ export const updateUser = async (req, res, next) => {
       );
     }
   }
+
   try {
     const updatedUser = await User.findByIdAndUpdate(
       req.params.userId,
       {
         $set: {
+          name: req.body.name, // Added name field to the update
           username: req.body.username,
           email: req.body.email,
           profilePicture: req.body.profilePicture,
           password: req.body.password,
         },
       },
-      { new: true }
+      { new: true } // Returns the updated document
     );
-    const { password, ...rest } = updatedUser._doc;
+
+    const { password, ...rest } = updatedUser._doc; // Exclude the password from the response
     res.status(200).json(rest);
   } catch (error) {
     next(error);
   }
 };
+
 
 export const deleteUser = async (req, res, next) => {
   if (!req.user.isAdmin && req.user.id !== req.params.userId) {

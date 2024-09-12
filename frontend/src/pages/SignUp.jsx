@@ -49,7 +49,7 @@ export default function SignUp() {
       <div className="sign-up-sec ">
         <div className="left">
           <Link to="/" className="sign-up-logo dark:text-white">
-            <span className="sign-up-logo-ah">Ahmad`s</span>
+            <span className="sign-up-logo-ah">Nishar Ahmad`s</span>
             Blog
           </Link>
           <p className="su-left-para">

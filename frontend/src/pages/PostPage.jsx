@@ -36,7 +36,6 @@ export default function PostPage() {
     };
     fetchPost();
   }, [postSlug]);
-  console.log(post)
 
   useEffect(() => {
     try {
@@ -59,24 +58,42 @@ export default function PostPage() {
         <Spinner size="xl" />
       </div>
     );
+
   return (
     <main className="p-3 flex flex-col max-w-6xl mx-auto min-h-screen">
-      <h1 className="text-3xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text-4xl">
+      <h1 className="text-teal-500 text-3xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text-4xl">
         {post && post.title}
       </h1>
       <Link
         to={`/search?category=${post && post.category}`}
         className="self-center mt-5"
       >
-        <Button color="gray" pill size="xs">
+        <Button color="green" pill size="xs">
           {post && post.category}
         </Button>
       </Link>
-      <img
-        src={post && post.image}
-        alt={post && post.title}
-        className="mt-10 p-3 max-h-[600px] w-full object-cover"
-      />
+      <div className="flex flex-col lg:flex-row mt-10">
+        <img
+          src={post && post.image}
+          alt={post && post.title}
+          className="max-h-[400px] w-full lg:w-1/2 object-cover border-2 border-black dark:border-white rounded-3xl"
+        />
+        <div className="lg:ml-10 lg:w-1/2 flex flex-col justify-center p-4 rounded-lg shadow-2xl">
+          <h2 className="text-xl dark:text-teal-700 text-gray-800 font-semibold mb-4">About Me</h2>
+          <p className="text-lg mb-4">
+            Hello! I’m Nishar Nishar Ahmad, a web and app developer with a passion for
+            creating engaging and user-friendly digital experiences. I
+            specialize in developing web applications using the MERN stack and
+            mobile apps using Flutter.
+          </p>
+          <p className="text-lg">
+            On my website, you’ll find a range of projects that showcase my
+            skills, including both web and mobile applications. Feel free to
+            explore my work, and don’t hesitate to reach out if you have any
+            questions or need a developer for your next project!
+          </p>
+        </div>
+      </div>
       <div className="flex justify-between p-3 border-b border-slate-500 mx-auto w-full max-w-2xl text-xs">
         <span>{post && new Date(post.createdAt).toLocaleDateString()}</span>
         <span className="italic">
@@ -91,7 +108,6 @@ export default function PostPage() {
         <CallToAction />
       </div>
       <CommentSection postId={post._id} />
-
       <div className="flex flex-col justify-center items-center mb-5">
         <h1 className="text-xl mt-5">Recent articles</h1>
         <div className="flex flex-wrap gap-5 mt-5 justify-center">
