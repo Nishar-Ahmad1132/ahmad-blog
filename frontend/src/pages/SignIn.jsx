@@ -1,18 +1,22 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
 import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import "./SignUp.css";
-import { signInFailure, signInStart, signInSuccess } from "../redux/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import OAuth from "../components/OAuth";
+import {
+  signInFailure,
+  signInStart,
+  signInSuccess,
+} from "../redux/user/userSlice";
+import "./SignUp.css";
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});
   const { loading, error: errorMessage } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
@@ -21,7 +25,7 @@ export default function SignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.email || !formData.password) {
-      return dispatch(signInFailure('Please fill all the fields.'));
+      return dispatch(signInFailure("Please fill all the fields."));
     }
     try {
       dispatch(signInStart());
@@ -33,78 +37,89 @@ export default function SignIn() {
       const data = await res.json();
       if (data.success === false) {
         dispatch(signInFailure(data.message));
-      }
-      else{
+      } else {
         dispatch(signInSuccess(data));
         navigate("/");
       }
     } catch (error) {
       dispatch(signInFailure(error.message));
     }
-
   };
+
   return (
-    <div className="mt-20 min-h-screen">
-      <div className="sign-up-sec ">
-        <div className="left">
-          <Link to="/" className="sign-up-logo dark:text-white">
-            <span className="sign-up-logo-ah">Nishar Ahmad`s</span>
-            Blog
-          </Link>
-          <p className="su-left-para">
-            Share your story with the world. Stand out with a
-            professionally-designed blog website that can be customized to fit
-            your brand. Build, manage, and promote your blog with Squarespace’s
-            built-in suite of design and marketing tools.
-          </p>
-        </div>
-        <div className="right">
-          <form className="sign-up-form" onSubmit={handleSubmit}>
-            <div>
-              <Label value="Your email" />
-              <TextInput
-                type="email"
-                placeholder="name@company.com"
-                id="email"
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <Label value="Your password" />
-              <TextInput
-                type="password"
-                placeholder="password"
-                id="password"
-                onChange={handleChange}
-              />
-            </div>
-            <Button
-              gradientDuoTone="purpleToPink"
-              type="submit"
-              disabled={loading}
-            >
-              {loading ? (
-                <>
-                  <Spinner size="sm" />
-                  <span className="pl-3">Loading...</span>
-                </>
-              ) : (
-                "Sign In"
-              )}
-            </Button>
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 dark:bg-gray-900">
+      <div className="w-full max-w-lg bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8">
+        <Link
+          to="/"
+          className="text-2xl font-bold text-center block mb-8 text-gray-800 dark:text-gray-100"
+        >
+          Nishar Ahmad's Blog
+        </Link>
+        <p className="text-center text-gray-500 dark:text-gray-400 mb-8">
+          Share your story with the world. Customize your blog with ease and
+          make it stand out!
+        </p>
+        <form className="space-y-6" onSubmit={handleSubmit}>
+          <div>
+            <Label
+              htmlFor="email"
+              value="Your email"
+              className="text-gray-700 dark:text-gray-300"
+            />
+            <TextInput
+              type="email"
+              placeholder="name@company.com"
+              id="email"
+              onChange={handleChange}
+              className="dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
+              required
+            />
+          </div>
+          <div>
+            <Label
+              htmlFor="password"
+              value="Your password"
+              className="text-gray-700 dark:text-gray-300"
+            />
+            <TextInput
+              type="password"
+              placeholder="password"
+              id="password"
+              onChange={handleChange}
+              className="dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
+              required
+            />
+          </div>
+          <Button
+            type="submit"
+            className="w-full bg-teal-500 hover:bg-teal-600 text-white dark:bg-teal-600 dark:hover:bg-teal-700"
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <Spinner size="sm" />
+                <span className="pl-3">Loading...</span>
+              </>
+            ) : (
+              "Sign In"
+            )}
+          </Button>
+          <div className="flex justify-center mt-4">
             <OAuth />
-          </form>
-          <div className="is-log-in">
-            <span>Don`t have an account?</span>
-            <Link to="/sign-up" className="text-blue-400">
-              Sign-Up
-            </Link>
           </div>
           {errorMessage && (
             <Alert className="mt-5" color="failure">
               {errorMessage}
             </Alert>
           )}
+        </form>
+        <div className="text-center mt-4">
+          <span className="text-gray-700 dark:text-gray-300">
+            Don`t have an account?
+          </span>
+          <Link to="/sign-up" className="text-teal-500 dark:text-teal-400 ml-2">
+            Sign-Up
+          </Link>
         </div>
       </div>
     </div>

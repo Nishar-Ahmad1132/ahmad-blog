@@ -52,7 +52,7 @@ export default function Header() {
 
   return (
     <Navbar className="border-b-2">
-      <Link to="/" className="logo">
+      <Link to="/" className="logo flex flex-col items-center sm:flex-row">
         <span className="logo-ah">Nishar Ahmad`s </span>
         Blog
       </Link>
